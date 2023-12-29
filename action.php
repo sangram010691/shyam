@@ -1,4 +1,7 @@
 <?php
+
+//action.php
+
 if(isset($_POST["action"]))
 {
 	
@@ -91,4 +94,31 @@ if(isset($_POST["action"]))
 
 		echo json_encode($output);
 	}
+
+	if($_POST['action'] == 'fetch_single')
+	{
+		$file = 'data.json';
+		$file_data = json_decode(file_get_contents($file), true);
+
+		$key = array_search($_POST["id"], array_column($file_data, 'id'));
+
+		echo json_encode($file_data[$key]);
+	}
+
+	//-----for delete the data---------
+	if($_POST['action'] == 'delete')
+	{
+		$file = 'data.json';
+		$file_data = json_decode(file_get_contents($file), true);
+
+		$key = array_search($_POST['id'], array_column($file_data, 'id'));
+
+		unset($file_data[$key]);
+
+		file_put_contents($file, json_encode($file_data));
+
+		echo json_encode(['success' => 'Data Deleted']);
+	}
 }
+
+?>
