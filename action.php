@@ -3,7 +3,7 @@ if(isset($_POST["action"]))
 {
 	
 	//---for add and edit the data------
-	if($_POST['action'] == 'Add')
+	if($_POST['action'] == 'Add' || $_POST['action'] == 'Edit')
 	{
 		$file = 'data.json';
 		$error = array();
@@ -31,7 +31,9 @@ if(isset($_POST["action"]))
 			$extension = pathinfo($filename, PATHINFO_EXTENSION);
 
 			/* Location */
-			
+			$location = "upload/".time().".". $extension;
+			move_uploaded_file($_FILES['file']['tmp_name'],$location);
+			$data['img'] = time().".". $extension;
 		}
 
 		if(empty($_POST['last_name']))
